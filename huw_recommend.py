@@ -18,10 +18,14 @@ dbstring = 'mongodb+srv://{0}:{1}@{2}/test?retryWrites=true&w=majority'
 load_dotenv()
 if os.getenv(envvals[0]) is not None:
     envvals = list(map(lambda x: str(os.getenv(x)), envvals))
-    client = MongoClient(dbstring.format(*envvals))
+    if envvals[1] != '':
+        dbstring = dbstring.format(*envvals)
+    else:
+        dbstring = 'mongodb://{0}/{1}'.format(envvals[2], 'test')
+    client = MongoClient(dbstring)
 else:
     client = MongoClient()
-database = client.huwebshop 
+database = client.huwebshop
 
 class Recom(Resource):
     """ This class represents the REST API that provides the recommendations for
@@ -38,3 +42,6 @@ class Recom(Resource):
 # This method binds the Recom class to the REST API, to parse specifically
 # requests in the format described below.
 api.add_resource(Recom, "/<string:profileid>/<int:count>")
+
+if __name__ == '__main__':
+    app.run(debug=True)
