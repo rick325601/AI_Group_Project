@@ -1,5 +1,6 @@
 from main_webshop import *
-
+from data import data
+import random
 
 postgres_lijst = data
 
@@ -9,17 +10,16 @@ def filter_brand_category(profile_id, connection_list, brand, category):
 
     cur = conn.cursor()
     cur.execute("SELECT * FROM products WHERE _id='23978'")
-    main = cur.fetchone()
 
     result = []
 
     try:
         cur = conn.cursor()
         cur.execute("SELECT * FROM products WHERE brand = (%s) AND category = (%s)", (brand, category))
-        products = cur.fetchmany(4)
+        products = cur.fetchall()
         print("The number of products: ", cur.rowcount)
         for product in products:
-            print(product)
+            # print(product)
             result.append(product[0])
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -27,9 +27,16 @@ def filter_brand_category(profile_id, connection_list, brand, category):
     finally:
         if conn is not None:
             conn.close()
-    return result
+
+    # Willekeurige aanbevelingen selecteren
+    random.shuffle(result)
+    recommended_products = result[:5]
+
+    return recommended_products
 
 # Voorbeeldgebruik:
-brand = "Merknaam"
-category = "Categorie"
-filter_brand_category('1', postgres_lijst, "8x4", "Gezond & verzorging")
+brand = "8x4"
+category = "Gezond & verzorging"
+recommendations = filter_brand_category('1', data, brand, category)
+print(recommendations)
+
