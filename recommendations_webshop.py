@@ -3,19 +3,11 @@ from data import data
 import random
 import psycopg2
 
-def collaborative_filtering(current_product_id):
-    """
-    Performs collaborative filtering to recommend similar products based on the given product ID.
+postgres_lijst = data
 
-    Args:
-        connection_list (list): List containing connection parameters for PostgreSQL.
-        current_product_id (str): ID of the current product.
-
-    Returns:
-        list: List of recommended products (tuples of product ID, product name).
-
-    """
-    conn = data
+def collaborative_filtering(connection_list, current_product_id):
+    conn = connection_postgres(connection_list[0], connection_list[1], connection_list[2],
+                               connection_list[3], connection_list[4])
 
     cur = conn.cursor()
 
@@ -36,27 +28,16 @@ def collaborative_filtering(current_product_id):
 
 # Voorbeeldgebruik:
 current_product_id = '23978'
-recommendations = collaborative_filtering(current_product_id)
-print("Collaborative Filtering:")
+recommendations = collaborative_filtering(data, current_product_id)
+print("collaberative filtering")
 for product in recommendations:
     print("Product ID:", product[0])
     print("Product Name:", product[2])
     print()
 
-
-def filter_brand_category_id(product_id):
-    """
-    Filters products based on the brand and category of the given product ID.
-
-    Args:
-        connection_list (list): List containing connection parameters for PostgreSQL.
-        product_id (str): ID of the product.
-
-    Returns:
-        list: List of recommended products (tuples of product ID, product name).
-
-    """
-    conn = data
+def filter_brand_category_id(connection_list, product_id):
+    conn = connection_postgres(connection_list[0], connection_list[1], connection_list[2],
+                               connection_list[3], connection_list[4])
 
     cur = conn.cursor()
     cur.execute("SELECT * FROM products WHERE _id = (%s)", (product_id,))
@@ -85,8 +66,8 @@ def filter_brand_category_id(product_id):
 
 # Voorbeeldgebruik:
 product_id = '16444'
-recommendations = filter_brand_category_id(product_id)
-print("Content Filtering:")
+recommendations = filter_brand_category_id(data, product_id)
+print("Content filtering")
 for product in recommendations:
     print("Product ID:", product[0])
     print("Product Name:", product[2])
