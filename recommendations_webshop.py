@@ -1,7 +1,8 @@
 from main_webshop import *
+from data import data
 import random
 
-postgres_lijst = ['localhost', 'webshop', 'postgres', 'eigen password', '5432']
+postgres_lijst = data
 
 def filter_brand_category(profile_id, connection_list, brand, category):
     conn = connection_postgres(connection_list[0], connection_list[1], connection_list[2],
@@ -9,7 +10,6 @@ def filter_brand_category(profile_id, connection_list, brand, category):
 
     cur = conn.cursor()
     cur.execute("SELECT * FROM products WHERE _id='23978'")
-    main = cur.fetchone()
 
     result = []
 
