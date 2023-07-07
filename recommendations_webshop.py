@@ -84,7 +84,7 @@ def filter_brand_category_id(product_id):
     return recommended_products
 
 # Voorbeeldgebruik:
-product_id = '23869'
+product_id = '16444'
 recommendations = filter_brand_category_id(product_id)
 print("Content Filtering:")
 for product in recommendations:
