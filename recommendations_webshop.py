@@ -3,9 +3,7 @@ from data import data
 import random
 import psycopg2
 
-postgres_lijst = data
-
-def collaborative_filtering(connection_list, current_product_id):
+def collaborative_filtering(current_product_id):
     """
     Performs collaborative filtering to recommend similar products based on the given product ID.
 
@@ -17,8 +15,7 @@ def collaborative_filtering(connection_list, current_product_id):
         list: List of recommended products (tuples of product ID, product name).
 
     """
-    conn = connection_postgres(connection_list[0], connection_list[1], connection_list[2],
-                               connection_list[3], connection_list[4])
+    conn = data
 
     cur = conn.cursor()
 
@@ -39,7 +36,7 @@ def collaborative_filtering(connection_list, current_product_id):
 
 # Voorbeeldgebruik:
 current_product_id = '23978'
-recommendations = collaborative_filtering(data, current_product_id)
+recommendations = collaborative_filtering(current_product_id)
 print("Collaborative Filtering:")
 for product in recommendations:
     print("Product ID:", product[0])
@@ -47,7 +44,7 @@ for product in recommendations:
     print()
 
 
-def filter_brand_category_id(connection_list, product_id):
+def filter_brand_category_id(product_id):
     """
     Filters products based on the brand and category of the given product ID.
 
@@ -59,8 +56,7 @@ def filter_brand_category_id(connection_list, product_id):
         list: List of recommended products (tuples of product ID, product name).
 
     """
-    conn = connection_postgres(connection_list[0], connection_list[1], connection_list[2],
-                               connection_list[3], connection_list[4])
+    conn = data
 
     cur = conn.cursor()
     cur.execute("SELECT * FROM products WHERE _id = (%s)", (product_id,))
@@ -89,7 +85,7 @@ def filter_brand_category_id(connection_list, product_id):
 
 # Voorbeeldgebruik:
 product_id = '23869'
-recommendations = filter_brand_category_id(data, product_id)
+recommendations = filter_brand_category_id(product_id)
 print("Content Filtering:")
 for product in recommendations:
     print("Product ID:", product[0])
