@@ -26,8 +26,8 @@ def collaborative_filtering(connection_list, current_product_id):
     current_product = cur.fetchone()
 
     # Filter products based on similar attributes
-    cur.execute("SELECT * FROM products WHERE price BETWEEN (%s) AND (%s) AND category = (%s) AND sub_category = (%s) AND brand = (%s)",
-                (current_product[1] - 50, current_product[1] + 50, current_product[4], current_product[5], current_product[10]))
+    cur.execute("SELECT * FROM products WHERE price BETWEEN (%s) AND (%s) AND category = (%s) AND sub_category = (%s) AND brand = (%s) AND recommendable = (%s)",
+                (current_product[1] - 50, current_product[1] + 50, current_product[4], current_product[5], current_product[10], current_product[9]))
     similar_products = cur.fetchall()
 
     # Randomly select recommended products
